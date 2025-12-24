@@ -18,10 +18,20 @@ config.capabilities = [{
     'appium:orientation': 'PORTRAIT',
     'appium:automationName': 'UiAutomator2',
     // The path to the app is VERY important
-    'appium:app': path.join(process.cwd(), './app/capyvocab.apk'), 
+    'appium:app': path.join(process.cwd(), './app/capyvocab.apk'),
     'appium:newCommandTimeout': 240,
     'appium:appPackage': 'com.example.capyvocab_fe',
     'appium:appActivity': 'com.example.capyvocab_fe.MainActivity'
 }];
+
+// config.services = [
+//     ['appium', {
+//         args: {
+//             address: 'localhost',
+//             port: 4723
+//         },
+//         logPath: './'
+//     }]
+// ];
 
 exports.config = config;

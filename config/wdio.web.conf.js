@@ -17,6 +17,6 @@ config.capabilities = [{
     // }
 }];
 
-config.services = ['chromedriver']; // Or 'selenium-standalone' if needed
+// config.services = ['chromedriver'];
 
 exports.config = config;
