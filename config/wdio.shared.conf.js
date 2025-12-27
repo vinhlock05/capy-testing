@@ -5,6 +5,10 @@ exports.config = {
     // ====================
     runner: 'local',
     
+    // Maximum number of total parallel running workers
+    // Set to 1 to run tests sequentially (avoid session conflicts on mobile)
+    maxInstances: 1,
+    
     // ==================
     // Specify Test Files
     // ==================
@@ -65,5 +69,5 @@ exports.config = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 60000
-    }
+    },
 }
