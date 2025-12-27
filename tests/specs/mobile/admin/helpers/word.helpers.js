@@ -5,51 +5,93 @@
 const AdminObject = require('../object/admin.object');
 const AdminData = require('../data/admin.data');
 
+const APP_PACKAGE = 'com.example.capyvocab_fe';
+
 const WordHelpers = {
     
+    async restartApp() {
+        try {
+            await driver.terminateApp(APP_PACKAGE);
+        } catch (e) { /* Ignore if not running */ }
+        
+        await driver.activateApp(APP_PACKAGE);
+        await driver.pause(3000); // Wait for app launch
+    },
+
     async loginAsAdmin() {
         await driver.pause(2000);
         const usernameInput = await $(AdminObject.login.usernameInput);
-        await usernameInput.setValue(AdminData.login.validAdmin.username);
-        
-        const passwordInput = await $(AdminObject.login.passwordInput);
-        await passwordInput.setValue(AdminData.login.validAdmin.password);
-        
-        const loginBtn = await $(AdminObject.login.loginButton);
-        await loginBtn.click();
-        await driver.pause(3000);
+        if (await usernameInput.isDisplayed()) {
+            await usernameInput.setValue(AdminData.login.validAdmin.username);
+            
+            const passwordInput = await $(AdminObject.login.passwordInput);
+            await passwordInput.setValue(AdminData.login.validAdmin.password);
+            
+            const loginBtn = await $(AdminObject.login.loginButton);
+            await loginBtn.click();
+            await driver.pause(3000);
+        }
     },
     
     async pressBack() {
-        await driver.back();
+        try {
+            await driver.back();
+        } catch (e) {}
         await driver.pause(1000);
     },
     
     async ensureOnMainScreen() {
-        let attempts = 0;
-        while (attempts < 3) {
+        const menuBtn = await $(AdminObject.menu.menu);
+        
+        try {
+            if (await menuBtn.isDisplayed()) return true;
+        } catch (e) {}
+        
+        for (let i = 0; i < 3; i++) {
+            await this.pressBack();
             try {
-                const menuBtn = await $(AdminObject.menu.menu);
                 if (await menuBtn.isDisplayed()) return true;
             } catch (e) {}
-            await this.pressBack();
-            attempts++;
         }
         return false;
     },
     
     async navigateToWordManagement() {
-        await this.ensureOnMainScreen();
-        const menuBtn = await $(AdminObject.menu.menu);
-        await menuBtn.click();
-        await driver.pause(1000);
+        try {
+            const addBtn = await $(AdminObject.wordManagement.addWordButton);
+            if (await addBtn.isDisplayed()) return;
+        } catch (e) {}
+
+        let isOnMain = await this.ensureOnMainScreen();
+        if (!isOnMain) {
+            console.log('Cannot find Main Screen. Restarting app...');
+            await this.restartApp();
+            await this.loginAsAdmin();
+        }
         
-        const wordMenu = await $(AdminObject.menu.wordManagement);
-        await wordMenu.click();
-        await driver.pause(2000);
+        try {
+            const menuBtn = await $(AdminObject.menu.menu);
+            await menuBtn.click();
+            await driver.pause(1000);
+            
+            const wordMenu = await $(AdminObject.menu.wordManagement);
+            await wordMenu.click();
+            await driver.pause(2000);
+        } catch (e) {
+            console.log('Navigation failed. Retrying...');
+            await this.restartApp();
+            await this.loginAsAdmin();
+            const menuBtn = await $(AdminObject.menu.menu);
+            await menuBtn.click();
+            await driver.pause(1000);
+            const wordMenu = await $(AdminObject.menu.wordManagement);
+            await wordMenu.click();
+            await driver.pause(2000);
+        }
     },
     
     async openAddWordDialog() {
+        await this.navigateToWordManagement();
         const addBtn = await $(AdminObject.wordManagement.addWordButton);
         await addBtn.click();
         await driver.pause(1000);

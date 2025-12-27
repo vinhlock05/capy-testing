@@ -6,29 +6,47 @@
 const AdminObject = require('../object/admin.object');
 const AdminData = require('../data/admin.data');
 
+const APP_PACKAGE = 'com.example.capyvocab_fe';
+
 const UserHelpers = {
     
+    /**
+     * Restart App
+     */
+    async restartApp() {
+        try {
+            await driver.terminateApp(APP_PACKAGE);
+        } catch (e) { /* Ignore if not running */ }
+        
+        await driver.activateApp(APP_PACKAGE);
+        await driver.pause(3000); // Wait for app launch
+    },
+
     /**
      * Login as Admin
      */
     async loginAsAdmin() {
         await driver.pause(2000);
         const usernameInput = await $(AdminObject.login.usernameInput);
-        await usernameInput.setValue(AdminData.login.validAdmin.username);
-        
-        const passwordInput = await $(AdminObject.login.passwordInput);
-        await passwordInput.setValue(AdminData.login.validAdmin.password);
-        
-        const loginBtn = await $(AdminObject.login.loginButton);
-        await loginBtn.click();
-        await driver.pause(3000);
+        if (await usernameInput.isDisplayed()) {
+            await usernameInput.setValue(AdminData.login.validAdmin.username);
+            
+            const passwordInput = await $(AdminObject.login.passwordInput);
+            await passwordInput.setValue(AdminData.login.validAdmin.password);
+            
+            const loginBtn = await $(AdminObject.login.loginButton);
+            await loginBtn.click();
+            await driver.pause(3000);
+        }
     },
     
     /**
      * Press back button
      */
     async pressBack() {
-        await driver.back();
+        try {
+            await driver.back();
+        } catch (e) {}
         await driver.pause(1000);
     },
     
@@ -36,21 +54,21 @@ const UserHelpers = {
      * Ensure we're on main screen (not in dialog or sub-screen)
      */
     async ensureOnMainScreen() {
-        let attempts = 0;
-        const maxAttempts = 3;
+        const menuBtn = await $(AdminObject.menu.menu);
         
-        while (attempts < maxAttempts) {
-            try {
-                const menuBtn = await $(AdminObject.menu.menu);
-                const isDisplayed = await menuBtn.isDisplayed();
-                if (isDisplayed) {
-                    return true;
-                }
-            } catch (e) {}
-            
+        try {
+            // If already on main screen (menu visible)
+            if (await menuBtn.isDisplayed()) return true;
+        } catch (e) {}
+
+        // Try to recover by pressing back a few times
+        for (let i = 0; i < 3; i++) {
             await this.pressBack();
-            attempts++;
+            try {
+                if (await menuBtn.isDisplayed()) return true;
+            } catch (e) {}
         }
+        
         return false;
     },
     
@@ -58,21 +76,48 @@ const UserHelpers = {
      * Navigate to User Management screen
      */
     async navigateToUserManagement() {
-        await this.ensureOnMainScreen();
+        // 1. Check if already in User Management (check Search Input or Add Button)
+        try {
+            const addBtn = await $(AdminObject.userManagement.addUserButton);
+            if (await addBtn.isDisplayed()) return;
+        } catch (e) {}
+
+        // 2. Check if we need to restart/recover
+        const isOnMain = await this.ensureOnMainScreen();
+        if (!isOnMain) {
+            console.log('Cannot find Main Screen. Restarting app...');
+            await this.restartApp();
+            await this.loginAsAdmin();
+        }
         
-        const menuBtn = await $(AdminObject.menu.menu);
-        await menuBtn.click();
-        await driver.pause(1000);
-        
-        const userMenu = await $(AdminObject.menu.userManagement);
-        await userMenu.click();
-        await driver.pause(2000);
+        // 3. Navigate from Menu
+        try {
+            const menuBtn = await $(AdminObject.menu.menu);
+            await menuBtn.click();
+            await driver.pause(1000);
+            
+            const userMenu = await $(AdminObject.menu.userManagement);
+            await userMenu.click();
+            await driver.pause(2000);
+        } catch (e) {
+            console.log('Navigation failed. Retrying...');
+            await this.restartApp();
+            await this.loginAsAdmin();
+            // Retry navigation logic once more
+            const menuBtn = await $(AdminObject.menu.menu);
+            await menuBtn.click();
+            await driver.pause(1000);
+            const userMenu = await $(AdminObject.menu.userManagement);
+            await userMenu.click();
+            await driver.pause(2000);
+        }
     },
     
     /**
      * Open Add User Dialog
      */
     async openAddUserDialog() {
+        await this.navigateToUserManagement(); // Ensure we are there first
         const addBtn = await $(AdminObject.userManagement.addUserButton);
         await addBtn.click();
         await driver.pause(1000);

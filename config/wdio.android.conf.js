@@ -7,7 +7,7 @@ const path = require('path');
 config.port = 4723; // Default Appium port
 
 config.specs = [
-    '../tests/specs/mobile/**/*.js'
+    '../tests/specs/mobile/**/*.test.js'
 ];
 
 config.capabilities = [{
