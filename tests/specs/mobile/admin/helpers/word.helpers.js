@@ -57,10 +57,6 @@ const WordHelpers = {
     },
     
     async navigateToWordManagement() {
-        try {
-            const addBtn = await $(AdminObject.wordManagement.addWordButton);
-            if (await addBtn.isDisplayed()) return;
-        } catch (e) {}
 
         let isOnMain = await this.ensureOnMainScreen();
         if (!isOnMain) {

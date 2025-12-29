@@ -72,16 +72,6 @@ const WithdrawalHelpers = {
     },
 
     async navigateToWithdrawal() {
-        try {
-            // Check if already in Withdrawal Form
-            const amountInput = await $(WithdrawalObject.form.amountInput);
-            if (await amountInput.isDisplayed()) {
-                return;
-            }
-        } catch (e) {
-            // Element check failed, likely crash or wrong screen
-        }
-
         // Use robust navigateToProfile (handles crash/restart)
         await this.navigateToProfile();
         

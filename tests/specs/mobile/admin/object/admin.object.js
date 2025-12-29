@@ -61,11 +61,11 @@ const AdminObject = {
         editButton: '(//android.view.View[@content-desc="Edit"])[1]',
         inputCourseName: '//android.widget.ScrollView/android.widget.EditText[1]',
         inputCourseTarget: '//android.widget.ScrollView/android.widget.EditText[2]',
-        inputCourseDescription: '//android.widget.ScrollView/android.view.View[1]',
+        inputCourseDescription: '//android.widget.ScrollView/android.widget.EditText[3]',
         optionSoCap: '//android.widget.ScrollView/android.view.View[1]',
         optionTrungCap: '//android.widget.ScrollView/android.view.View[2]',
         optionCaoCap: '//android.widget.ScrollView/android.view.View[3]',
-        dropdownType: '//android.widget.ScrollView/android.widget.EditText[3]',
+        dropdownType: '//android.widget.ScrollView/android.view.View[1]',
         
         addDialog: {
             cancelBtn: '//android.widget.ScrollView/android.view.View[2]/android.widget.Button',
