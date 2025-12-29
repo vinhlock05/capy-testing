@@ -14,6 +14,8 @@ config.capabilities = [
   },
 ];
 
+config.baseUrl = "https://cabyvocabfe-roan.vercel.app";
+
 // Chỉ enable service cho web, không để Appium
 // config.services = ["devtools"];
 
