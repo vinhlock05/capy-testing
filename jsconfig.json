@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "types": ["@wdio/globals/types"]
+  },
+  "include": ["tests/**/*.js", "config/**/*.js"]
+}
