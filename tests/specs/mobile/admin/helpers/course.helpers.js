@@ -57,11 +57,6 @@ const CourseHelpers = {
     },
     
     async navigateToCourseManagement() {
-        try {
-            const addBtn = await $(AdminObject.courseManagement.addCourseButton);
-            if (await addBtn.isDisplayed()) return;
-        } catch (e) {}
-
         let isOnMain = await this.ensureOnMainScreen();
         if (!isOnMain) {
             console.log('Cannot find Main Screen. Restarting app...');

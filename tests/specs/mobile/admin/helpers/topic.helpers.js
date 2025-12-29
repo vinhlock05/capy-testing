@@ -57,10 +57,6 @@ const TopicHelpers = {
     },
     
     async navigateToTopicManagement() {
-        try {
-            const addBtn = await $(AdminObject.topicManagement.addTopicButton);
-            if (await addBtn.isDisplayed()) return;
-        } catch (e) {}
 
         let isOnMain = await this.ensureOnMainScreen();
         if (!isOnMain) {

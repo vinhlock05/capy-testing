@@ -76,12 +76,6 @@ const UserHelpers = {
      * Navigate to User Management screen
      */
     async navigateToUserManagement() {
-        // 1. Check if already in User Management (check Search Input or Add Button)
-        try {
-            const addBtn = await $(AdminObject.userManagement.addUserButton);
-            if (await addBtn.isDisplayed()) return;
-        } catch (e) {}
-
         // 2. Check if we need to restart/recover
         const isOnMain = await this.ensureOnMainScreen();
         if (!isOnMain) {
