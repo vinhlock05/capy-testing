@@ -22,7 +22,7 @@ describe("TC-PROF-009 to TC-PROF-017: Edit Profile and Password Form Tests", () 
     await browser.url("/login");
 
     const validUser = loginData.validUser;
-    await LoginPage.login(validUser.username, validUser.password);
+    LoginPage.login(validUser.username, validUser.password);
 
     expect(await LoginPage.getToastMessage()).toEqual(
       SuccessMessage.LOGIN_SUCCESS

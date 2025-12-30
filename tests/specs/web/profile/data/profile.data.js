@@ -1,16 +1,16 @@
 module.exports = {
   validUser: {
-    username: "testuser",
+    username: "User001",
     email: "testuser@example.com",
-    password: "User@123",
+    password: "User1123",
   },
-  validPassword: "User@123",
+  validPassword: "User1123",
   newPassword: "NewPass@123",
   confirmPassword: "NewPass@123",
   wrongConfirmPassword: "WrongPass@123",
 
   // Test data for TC-PROF-022, TC-PROF-023
-  newUsername: "User02",
+  newUsername: "User001",
   newEmail: "User02@gmail.com",
   newPassword2: "User@145",
 
@@ -23,7 +23,7 @@ module.exports = {
   msg17: "success", // Profile update success
 
   // Password test data
-  currentPassword: "User@123",
+  currentPassword: "User1123",
   passwordToTest: "User123",
   mismatchPassword: "Password",
 };

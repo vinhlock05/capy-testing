@@ -16,7 +16,6 @@ export const ErrorMessage = {
   MSG14: "Logout successfully",
   MSG15: "Logout failed",
   MSG16: "Email or username already taken",
-  MSG17: "Update profile successfully.",
   MSG18: "Your progress may not have been fully saved.",
   MSG19: "No vocabulary due for review.",
   MSG20: "Correct!",

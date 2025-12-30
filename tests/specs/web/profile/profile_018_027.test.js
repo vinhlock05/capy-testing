@@ -96,7 +96,7 @@ describe("TC-PROF-018 to TC-PROF-027: Profile Update and Validation Tests", () =
     });
 
     // Verify that error occurred (email validation)
-    expect(errorMessage).toBeTruthy();
+    expect(errorMessage).toEqual(ErrorMessage.MSG1);
   });
 
   it("TC-PROF-019: Empty username should return error message", async () => {
@@ -280,9 +280,7 @@ describe("TC-PROF-018 to TC-PROF-027: Profile Update and Validation Tests", () =
       return toast ? toast.textContent : null;
     });
 
-    expect(
-      successMessage && successMessage.includes("thành công")
-    ).toBeTruthy();
+    expect(successMessage).toEqual(SuccessMessage.MSG17);
   });
 
   it("TC-PROF-026: System should return MSG17 on valid profile update", async () => {
@@ -303,10 +301,7 @@ describe("TC-PROF-018 to TC-PROF-027: Profile Update and Validation Tests", () =
     });
 
     // Verify success message is displayed
-    expect(successMessage).toBeTruthy();
-    expect(
-      successMessage && successMessage.includes("thành công")
-    ).toBeTruthy();
+    expect(successMessage).toEqual(SuccessMessage.MSG17);
   });
 
   it("TC-PROF-027: Edit form should be closable", async () => {

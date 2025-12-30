@@ -18,7 +18,7 @@ describe("TC-PROF-002 & TC-PROF-008: Profile Field Visibility", () => {
     await browser.url("/login");
 
     const validUser = loginData.validUser;
-    await LoginPage.login(validUser.username, validUser.password);
+    LoginPage.login(validUser.username, validUser.password);
 
     expect(await LoginPage.getToastMessage()).toEqual(
       SuccessMessage.LOGIN_SUCCESS
@@ -29,7 +29,7 @@ describe("TC-PROF-002 & TC-PROF-008: Profile Field Visibility", () => {
 
     expect(await browser.getUrl()).toContain("/profile");
 
-    await browser.pause(2000);
+    await browser.pause(5000);
   });
 
   it("TC-PROF-002: Email field should be visible on Profile Details Page", async () => {
